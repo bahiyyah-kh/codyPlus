@@ -4,6 +4,7 @@ import LearningPath from '../components/LearningPath.jsx'
 import CTASection from '../components/CTASection.jsx'
 import FeaturesSection from '../components/FeaturesSection.jsx'
 import TestimonialsSection from '../components/TestimonialsSection.jsx'
+import Footer from'../components/Footer.jsx'
 
 function HomePage() {
   return (
@@ -14,6 +15,7 @@ function HomePage() {
       <FeaturesSection />
       <TestimonialsSection />
       <CTASection />
+      <Footer />
     </main>
   )
 }
