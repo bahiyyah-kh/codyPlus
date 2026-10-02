@@ -6,15 +6,15 @@ import FeaturesSection from '../components/FeaturesSection.jsx'
 import TestimonialsSection from '../components/TestimonialsSection.jsx'
 import Footer from'../components/Footer.jsx'
 
-function HomePage() {
+function HomePage({ onLogin }) {
   return (
     <main>
-      <Navbar />
+      <Navbar onLogin={onLogin} />
       <Hero />
       <LearningPath />
       <FeaturesSection />
       <TestimonialsSection />
-      <CTASection />
+      <CTASection onLogin={onLogin}  />
       <Footer />
     </main>
   )
