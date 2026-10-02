@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar.jsx'
 import Hero from '../components/Hero.jsx'
 import LearningPath from '../components/LearningPath.jsx'
@@ -7,14 +8,20 @@ import TestimonialsSection from '../components/TestimonialsSection.jsx'
 import Footer from'../components/Footer.jsx'
 
 function HomePage() {
+  const navigate = useNavigate()
+
+  function handleRegister() {
+    navigate('/register')
+  }
+
   return (
     <main>
-      <Navbar />
-      <Hero />
-      <LearningPath />
+      <Navbar onRegister={handleRegister} />
+      <Hero onStartJourney={handleRegister} />
+      <LearningPath onStartLearning={handleRegister} />
       <FeaturesSection />
       <TestimonialsSection />
-      <CTASection />
+      <CTASection onRegister={handleRegister} />
       <Footer />
     </main>
   )
