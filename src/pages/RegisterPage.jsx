@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Check, Eye, EyeOff, Rocket } from 'lucide-react'
 import codyLogo from '../assets/Codypluslogo.png'
 import PasswordRequirements from '../components/PasswordRequirements'
@@ -16,6 +17,7 @@ const registerErrors = {
 }
 
 export default function RegisterPage() {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [isPasswordFocused, setIsPasswordFocused] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -91,6 +93,8 @@ export default function RegisterPage() {
           setSuccessMessage('تم إنشاء حسابك بنجاح.')
         }
         setFormValues((values) => ({ ...values, password: '', confirmPassword: '' }))
+        // Only a confirmed registration opens welcome; this does not log the user in.
+        navigate('/welcome', { replace: true })
       } else if (response.status === 400) {
         const errors = {}
         let generalError = ''
@@ -213,7 +217,7 @@ export default function RegisterPage() {
 
           <p className="mt-5 text-center text-sm text-gray-400">
             لديك حساب بالفعل؟{' '}
-            <span className="text-[#08458e]">تسجيل الدخول</span>
+            <Link to="/login" className="text-[#08458e]">تسجيل الدخول</Link>
           </p>
         </div>
       </main>

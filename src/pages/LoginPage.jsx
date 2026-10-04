@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import logo from '../assets/Codypluslogo.png'
 import { login, saveSession } from '../auth/loginApi.js'
 import useRecoveryRequest from '../auth/useRecoveryRequest.js'
@@ -76,7 +77,7 @@ export default function LoginPage({ onBackHome, onForgotPassword, onLoginSuccess
 
             <p className="mt-5 text-center text-sm text-[#6B7280]">
               ليس لديك حساب؟{' '}
-              <button type="button" disabled className="cursor-not-allowed font-semibold opacity-70">سجّل الآن مجاناً (غير متاح حاليًا)</button>
+              <Link to="/register" className="font-semibold text-[#03045E] hover:text-[#03045E]">سجّل الآن مجاناً</Link>
             </p>
           </div>
         </div>
