@@ -1,8 +1,20 @@
 import logo from '../assets/Codypluslogo.png'
+import { login, saveSession } from '../auth/loginApi.js'
+import useRecoveryRequest from '../auth/useRecoveryRequest.js'
 
-export default function LoginPage({ onBackHome, onForgotPassword }) {
+export default function LoginPage({ onBackHome, onForgotPassword, onLoginSuccess }) {
+  const { pending, error, run } = useRecoveryRequest()
   const handleSubmit = (event) => {
     event.preventDefault()
+    const form = event.currentTarget
+    const fields = new FormData(form)
+    const email = fields.get('email').trim()
+    const password = fields.get('password')
+    run(signal => login(email, password, signal), session => {
+      saveSession(session)
+      form.reset()
+      onLoginSuccess?.(session)
+    })
   }
 
   return (
@@ -32,7 +44,8 @@ export default function LoginPage({ onBackHome, onForgotPassword }) {
           </div>
 
           <div className="rounded-2xl bg-white p-5 shadow-[0_2px_14px_rgba(3,4,94,0.07)] sm:p-7">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <form onSubmit={handleSubmit} aria-busy={pending} className="flex flex-col gap-5">
+              {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
               <div>
                 <label htmlFor="email" className="mb-2 block text-sm font-medium text-[#03045E]">البريد الإلكتروني</label>
                 <div className="relative">
@@ -58,7 +71,7 @@ export default function LoginPage({ onBackHome, onForgotPassword }) {
                 </div>
               </div>
 
-              <button type="submit" className="w-full rounded-[22px] bg-[#023E8A] py-3 text-base font-bold text-white transition-colors hover:bg-[#03045E] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#023E8A]">تسجيل الدخول</button>
+              <button type="submit" disabled={pending} className="w-full rounded-[22px] bg-[#023E8A] py-3 text-base font-bold text-white transition-colors hover:bg-[#03045E] disabled:cursor-wait disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#023E8A]">{pending ? 'جارٍ تسجيل الدخول...' : 'تسجيل الدخول'}</button>
             </form>
 
             <p className="mt-5 text-center text-sm text-[#6B7280]">

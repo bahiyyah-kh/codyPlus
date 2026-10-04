@@ -60,6 +60,10 @@ function AppRoutes() {
         element={
           <LoginPage
             onBackHome={() => navigate('/')}
+            onLoginSuccess={() => {
+              clearRecovery()
+              navigate('/', { replace: true })
+            }}
             onForgotPassword={() => {
               clearRecovery()
               navigate('/forgot-password')
