@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom'
 import HomePage from './pages/HomePage.jsx'
 import RegisterPage from './pages/RegisterPage.jsx'
+import CodyWelcomePage from './pages/welcomPage/CodyWelcomePage.jsx'
+import OnboardingPage from './pages/welcomPage/OnboardingPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx'
 import RecoveryMethodPage from './pages/RecoveryMethodPage.jsx'
@@ -55,6 +57,8 @@ function AppRoutes() {
         element={<HomePage onLogin={() => navigate('/login')} />}
       />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/welcome" element={<CodyWelcomePage />} />
+      <Route path="/onboarding" element={<OnboardingPage />} />
       <Route
         path="/login"
         element={
