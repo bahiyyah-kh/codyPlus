@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Check, Eye, EyeOff, Rocket } from 'lucide-react'
 import codyLogo from '../assets/Codypluslogo.png'
 import PasswordRequirements from '../components/PasswordRequirements'
-
+//شو registerErrors؟ يحوّل error codes القادمة من الـ Backend إلى رسائل عربية مرتبطة بالحقل المناسب.
 const registerErrors = {
   EMAIL_ALREADY_EXISTS: { field: 'email', message: 'يوجد حساب مسجل بهذا البريد الإلكتروني بالفعل. يمكنك تسجيل الدخول أو استخدام بريد إلكتروني آخر.' },
   INVALID_EMAIL: { field: 'email', message: 'يرجى إدخال بريد إلكتروني صحيح.' },
@@ -26,6 +26,7 @@ export default function RegisterPage() {
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
+  //ليش useRef مع requestInProgress؟ لمنع إرسال أكثر من request للتسجيل في نفس الوقت
   const requestInProgress = useRef(false)
   const passwordRequirements = [
     { id: 'length', label: '8 خانات على الأقل', met: formValues.password.length >= 8 },
@@ -40,7 +41,9 @@ export default function RegisterPage() {
 
   function handleChange(event) {
     const { name, value } = event.target
-    setFormValues((values) => ({ ...values, [name]: value }))
+    //احتفظ بكل البيانات القديمة، وعدّل فقط الحقل الذي المستخدم يكتب فيه.
+    setFormValues((values) => ({ ...values,
+       [name]: value }))
     setFieldErrors((errors) => ({
       ...errors,
       [name]: undefined,
@@ -51,6 +54,7 @@ export default function RegisterPage() {
   }
 
   async function handleSubmit(event) {
+    //يمنع الـ form من عمل Refresh للصفحة.
     event.preventDefault()
     if (requestInProgress.current) return
 
@@ -123,8 +127,8 @@ export default function RegisterPage() {
       requestInProgress.current = false
       setIsSubmitting(false)
     }
-  }
-
+  } 
+//هاي دالة بتجهّز الإعدادات المشتركة لأي input حسب اسمه.
   function inputProps(name) {
     const descriptionIds = [
       fieldErrors[name] ? `${name}-error` : null,
@@ -135,6 +139,7 @@ export default function RegisterPage() {
       value: formValues[name],
       onChange: handleChange,
       disabled: isSubmitting,
+      //هدول الاثنين اسمهم ARIA attributes، وهدفهم الأساسي Accessibility، يعني مساعدة قارئات الشاشة تفهم حالة الـ input.
       'aria-invalid': Boolean(fieldErrors[name]) || (name === 'confirmPassword' && hasConfirmation && !passwordsMatch),
       'aria-describedby': descriptionIds || undefined,
     }
@@ -212,7 +217,9 @@ export default function RegisterPage() {
             {errorMessage && <p role="alert" className="text-sm text-red-600">{errorMessage}</p>}
             {successMessage && <p role="status" className="text-sm text-green-700">{successMessage}</p>}
 
-            <button type="submit" disabled={isSubmitting} className="min-h-12 w-full rounded-full bg-[#08458e] px-4 py-3 text-base font-medium text-white hover:bg-[#063975] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700 disabled:cursor-wait disabled:opacity-70">{isSubmitting ? 'جارٍ إنشاء الحساب...' : 'إنشاء الحساب'}</button>
+            <button type="submit" disabled={isSubmitting} 
+            className="min-h-12 w-full rounded-full bg-[#08458e] px-4 py-3 text-base font-medium text-white hover:bg-[#063975] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700 disabled:cursor-wait disabled:opacity-70">
+              {isSubmitting ? 'جارٍ إنشاء الحساب...' : 'إنشاء الحساب'}</button>
           </form>
 
           <p className="mt-5 text-center text-sm text-gray-400">

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Rocket } from 'lucide-react'
 import journeySrc from '../../assets/welcomRopot/الرحلة .png'
 import activitiesSrc from '../../assets/welcomRopot/أنشطة_ممتعة.png'
@@ -33,7 +34,7 @@ const steps = [
 ]
 
 export default function OnboardingPage() {
-  // Keep navigation within the implemented steps on the same route.
+  const navigate = useNavigate()
   const [stepIndex, setStepIndex] = useState(0)
   const step = steps[stepIndex]
   const isFinalStep = stepIndex === steps.length - 1
@@ -71,8 +72,7 @@ export default function OnboardingPage() {
             </button>
           )}
           {isFinalStep ? (
-            // Keep the final action disabled until its destination is confirmed.
-            <button type="button" disabled className="flex h-[70px] w-[160px] items-center justify-center gap-2 rounded-[30px] bg-[#FFB323] px-3 text-xl font-medium text-[#03045E] disabled:cursor-not-allowed sm:w-[198px] sm:gap-3">
+            <button type="button" onClick={() => navigate('/student')} className="flex h-[70px] w-[160px] cursor-pointer items-center justify-center gap-2 rounded-[30px] bg-[#FFB323] px-3 text-xl font-medium text-[#03045E] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#023E8A] sm:w-[198px] sm:gap-3">
               <span>ابدأ الرحلة!</span>
               <Rocket size={22} className="shrink-0" aria-hidden="true" />
             </button>

@@ -17,6 +17,8 @@ import ResetPasswordPage from './pages/ResetPasswordPage.jsx'
 import PasswordResetSuccessPage from './pages/PasswordResetSuccessPage.jsx'
 import RecoveryProvider from './auth/RecoveryProvider.jsx'
 import { useRecovery } from './auth/RecoveryContext.js'
+import StudentLayout from './components/student/StudentLayout.jsx'
+import StudentHomePage from './pages/student/StudentHomePage.jsx'
 
 function RecoveryGuard({ step, children }) {
   const { recovery } = useRecovery()
@@ -59,6 +61,9 @@ function AppRoutes() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/welcome" element={<CodyWelcomePage />} />
       <Route path="/onboarding" element={<OnboardingPage />} />
+      <Route path="/student" element={<StudentLayout />}>
+        <Route index element={<StudentHomePage />} />
+      </Route>
       <Route
         path="/login"
         element={
