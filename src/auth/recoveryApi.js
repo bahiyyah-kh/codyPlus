@@ -1,5 +1,8 @@
 const baseUrl = 'https://codyplus.runasp.net'
-
+const errorMessages = {
+  INVALID_RESET_CODE:
+    'رمز التحقق غير صحيح أو منتهي الصلاحية. اطلب رمزاً جديداً وحاول مجدداً.',
+}
 // These handlers use the confirmed backend contracts; no recovery secrets are persisted.
 async function post(path, body, signal) {
   const response = await fetch(`${baseUrl}/api/auth/${path}`, {
@@ -16,7 +19,15 @@ async function post(path, body, signal) {
       ? 'طلبات كثيرة. يرجى الانتظار قبل إعادة المحاولة.'
       : response.status >= 500 ? 'الخدمة غير متاحة حالياً. يرجى المحاولة لاحقاً.'
         : 'تعذر إكمال الطلب. تحقق من البيانات وحاول مجدداً.'
-    const error = new Error(messages || (typeof data?.message === 'string' && data.message) || (typeof data?.detail === 'string' && data.detail) || (typeof data?.title === 'string' && data.title) || fallback)
+    
+    
+        const message = Object.hasOwn(errorMessages, data?.code)
+           ? errorMessages[data.code]
+           : fallback
+
+        const error = new Error(message)
+        error.code = data?.code
+        
     error.status = response.status
     const retryHeader = response.headers.get('Retry-After')
     const retry = Number(retryHeader)
