@@ -3,7 +3,7 @@ const activityTypes = ['lesson', 'puzzle', 'game', 'challenge', 'quiz']
 export const demoStudent = { name: 'شهد', levelXp: 500 }
 
 export const demoStages = [
-  'المقدمة والمفاهيم',
+  'المقدمة والتعليمات',
   'المتغيرات',
   'الشروط',
   'الحلقات التكرارية',
