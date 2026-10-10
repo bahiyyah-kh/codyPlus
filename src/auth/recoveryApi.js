@@ -13,8 +13,7 @@ async function post(path, body, signal) {
   let data
   try { data = raw ? JSON.parse(raw) : null } catch { data = null }
   if (!response.ok) {
-    const messages = data?.errors && typeof data.errors === 'object'
-      ? Object.values(data.errors).flat().filter(value => typeof value === 'string').join(' ') : ''
+    
     const fallback = response.status === 429
       ? 'طلبات كثيرة. يرجى الانتظار قبل إعادة المحاولة.'
       : response.status >= 500 ? 'الخدمة غير متاحة حالياً. يرجى المحاولة لاحقاً.'

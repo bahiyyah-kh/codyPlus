@@ -4,7 +4,7 @@ import ProgressBar from './ProgressBar.jsx'
 
 const activityIcons = { lesson: Video, puzzle: Puzzle, game: Gamepad2, challenge: Code2, quiz: ClipboardList }
 
-export default function StageDetailsModal({ stage, onClose }) {
+export default function StageDetailsModal({ stage, onClose, onStart }) {
   const dialogRef = useRef(null)
   const titleId = useId()
   const completedCount = stage.activities.filter(activity => activity.completed).length
@@ -58,10 +58,11 @@ export default function StageDetailsModal({ stage, onClose }) {
                       {activity.completed ? (
                         <><Check size={14} aria-hidden="true" /><span>مكتمل</span></>
                       ) : activity.available ? (
-                        <>{activity.rewardXp != null ? <span dir="ltr" className="inline-block">+{activity.rewardXp} XP</span> : <span>متاح</span>}</>
+                        <>{activity.rewardXp == null && <span>متاح</span>}</>
                       ) : (
                         <><LockKeyhole size={14} aria-hidden="true" /><span className="sr-only">مقفل</span></>
                       )}
+                      {activity.rewardXp != null && <span dir="ltr" className="inline-block">+{activity.rewardXp} XP</span>}
                     </div>
                   </div>
                 </li>
@@ -73,7 +74,7 @@ export default function StageDetailsModal({ stage, onClose }) {
             <div className="mb-2 flex items-center justify-between text-sm"><span className="text-[#7C8599]">تقدم المرحلة</span><span dir="ltr" className="text-[#023E8A]">{percent}%</span></div>
             <ProgressBar value={percent} label="تقدم المرحلة" />
           </div>
-          <button type="button" disabled className="mt-7 flex min-h-[64px] w-full cursor-not-allowed items-center justify-center gap-3 rounded-[28px] bg-[#023E8A] px-4 py-4 text-xl font-bold text-white">
+          <button type="button" disabled={!onStart} onClick={onStart} className="mt-7 flex min-h-[64px] w-full cursor-pointer items-center justify-center gap-3 rounded-[28px] bg-[#023E8A] px-4 py-4 text-xl font-bold text-white hover:bg-[#03045E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#023E8A] disabled:cursor-not-allowed">
             <Play size={21} strokeWidth={1.8} aria-hidden="true" />ابدأ المرحلة
           </button>
         </div>

@@ -10,7 +10,25 @@ export default function StudentLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const dialogRef = useRef(null)
   const menuRef = useRef(null)
-  const journey = calculateJourney(demoStages)
+  const [stages, setStages] = useState(() => demoStages)
+  const journey = calculateJourney(stages)
+
+  function completeFirstLesson() {
+    setStages(previous => {
+      const stage = calculateJourney(previous).stages.find(item => item.id === 1)
+      const lesson = stage?.activities.find(activity => activity.type === 'lesson')
+      if (!stage?.unlocked || !lesson?.available || lesson.completed) return previous
+
+      return previous.map(item => item.id !== 1 ? item : {
+        ...item,
+        activities: item.activities.map(activity => activity.type !== 'lesson' ? activity : {
+          ...activity,
+          completed: true,
+          earnedXp: activity.rewardXp,
+        }),
+      })
+    })
+  }
 
   useEffect(() => {
     if (!drawerOpen) return
@@ -46,7 +64,7 @@ export default function StudentLayout() {
           <StudentSidebar student={demoStudent} xp={journey.xp} onNavigate={() => setDrawerOpen(false)} />
         </div>
       </dialog>
-      <main className="min-w-0 pt-16 lg:mr-64 lg:pt-0"><Outlet context={{ student: demoStudent, journey }} /></main>
+      <main className="min-w-0 pt-16 lg:mr-64 lg:pt-0"><Outlet context={{ student: demoStudent, journey, completeFirstLesson }} /></main>
     </div>
   )
 }
